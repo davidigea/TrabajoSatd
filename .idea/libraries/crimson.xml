@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="crimson">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jade.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/weka.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/swing-layout-1.0.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/http.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/crimson.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
