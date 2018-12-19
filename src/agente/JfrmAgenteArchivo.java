@@ -1,8 +1,8 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this template, choose Servicios | Templates
  * and open the template in the editor.
  */
-package agentes;
+package agente;
 
 /**
  *
@@ -10,9 +10,7 @@ package agentes;
  */
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
