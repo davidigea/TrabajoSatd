@@ -23,6 +23,8 @@ public class NaiveBayes_behaviour extends Behaviour {
         Object[] contenidoRespuesta = null;
         Classifier clasificadorBayes = new NaiveBayes();
         Evaluation evaluadorBayes = null;
+        boolean atendido = false;
+        ACLMessage msgRecibido;
 
         //pedir particiones
         ArrayList<AID> candidatos = Tools.BuscarAgentes(this.myAgent, "particionador");
@@ -31,6 +33,23 @@ public class NaiveBayes_behaviour extends Behaviour {
         AID agenteParticionador = new AID(candidatos.get(elegido).getLocalName(), AID.ISLOCALNAME);
         msg.addReceiver(agenteParticionador);
         this.myAgent.send(msg);
+
+        while (!atendido) {
+            msgRecibido = this.myAgent.blockingReceive();
+
+            if(msgRecibido.getPerformative() != ACLMessage.REFUSE) {
+                atendido = true;
+            } else {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                this.myAgent.send(msg);
+            }
+        }
+
+
         System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y acabo de enviar una " +
                             "petición de particiones al agente " + agenteParticionador.getLocalName());
 
@@ -67,10 +86,10 @@ public class NaiveBayes_behaviour extends Behaviour {
         }
 
         while(true){
-            //esperar petición de entrenamiento
+            //esperar petición de resultados de entrenamiento
             ACLMessage peticionEntrenar = this.myAgent.blockingReceive();
 
-            //enviar entrenamiento
+            //enviar resultados de entrenamiento
             ACLMessage mensajeEntrenamiento = new ACLMessage(ACLMessage.REQUEST);
             AID agenteCalculadorMedia = new AID(peticionEntrenar.getSender().getLocalName(), AID.ISLOCALNAME);
             mensajeEntrenamiento.addReceiver(agenteCalculadorMedia);

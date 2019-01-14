@@ -21,8 +21,8 @@ public class Particionador_behaviour extends Behaviour {
     @Override
     public void action() {
         ACLMessage respuestaFichero = null;
-        Instances datosEntrenamiento = null;
-        Instances datosTest = null;
+        Instances datosEntrenamiento;
+        Instances datosTest;
         String nombreReceptor = "";
 
         //pedir fichero
@@ -39,6 +39,9 @@ public class Particionador_behaviour extends Behaviour {
         while (!nombreReceptor.equals("lector")) {
             respuestaFichero = this.myAgent.blockingReceive();
             nombreReceptor = respuestaFichero.getSender().getLocalName();
+            ACLMessage rechazo = new ACLMessage(ACLMessage.REFUSE);
+            AID destinatario = new AID(nombreReceptor, AID.ISLOCALNAME);
+            rechazo.addReceiver(destinatario);
         }
         System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y acabo de recibir un" +
                 " fichero CSV del agente " + agenteLector.getLocalName());
@@ -50,10 +53,10 @@ public class Particionador_behaviour extends Behaviour {
         }
 
         //particionar fichero
-        //int tamanyoTrozoEntrenamiento = datos.size()*percentage/100;
-        //int tamanyoTrozoTest = datos.size() - tamanyoTrozoEntrenamiento;
-        //datosEntrenamiento = new Instances(datos, 0, tamanyoTrozoEntrenamiento);
-        //datosTest = new Instances(datos, tamanyoTrozoEntrenamiento, tamanyoTrozoTest);
+        int tamanyoTrozoEntrenamiento = datos.size()*percentage/100;
+        int tamanyoTrozoTest = datos.size() - tamanyoTrozoEntrenamiento;
+        datosEntrenamiento = new Instances(datos, 0, tamanyoTrozoEntrenamiento);
+        datosTest = new Instances(datos, tamanyoTrozoEntrenamiento, tamanyoTrozoTest);
 
         while (true) {
             //esperar petición de particiones
@@ -69,7 +72,6 @@ public class Particionador_behaviour extends Behaviour {
             try {
                 mensajeParticiones.setContentObject(new Object[]{datosEntrenamiento, datosTest});
                 this.myAgent.send(mensajeParticiones);
-
                 Thread.sleep(1000000);
             } catch (IOException e) {
                 e.printStackTrace();
