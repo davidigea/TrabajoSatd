@@ -35,7 +35,11 @@ public class NaiveBayes_behaviour extends Behaviour {
         msg.addReceiver(agenteParticionador);
         this.myAgent.send(msg);
 
+        System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y acabo de enviar una " +
+                            "petición de particiones al agente " + agenteParticionador.getLocalName());
+
         while (!atendido) {
+            System.out.println("A");
             msgRecibido = this.myAgent.blockingReceive();
 
             if(msgRecibido.getPerformative() != ACLMessage.REFUSE) {
@@ -49,10 +53,6 @@ public class NaiveBayes_behaviour extends Behaviour {
                 this.myAgent.send(msg);
             }
         }
-
-
-        System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y acabo de enviar una " +
-                            "petición de particiones al agente " + agenteParticionador.getLocalName());
 
         //recibir particiones
         while (!nombreReceptor.equals("particionador")) {
