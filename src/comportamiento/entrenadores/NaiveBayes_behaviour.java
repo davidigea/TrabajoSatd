@@ -25,6 +25,7 @@ public class NaiveBayes_behaviour extends Behaviour {
         Evaluation evaluadorBayes = null;
         boolean atendido = false;
         ACLMessage msgRecibido;
+        double[] estadisticas = {};
 
         //pedir particiones
         ArrayList<AID> candidatos = Tools.BuscarAgentes(this.myAgent, "particionador");
@@ -81,6 +82,13 @@ public class NaiveBayes_behaviour extends Behaviour {
             clasificadorBayes.buildClassifier(datosEntrenamiento);
             evaluadorBayes = new Evaluation(datosEntrenamiento);
             evaluadorBayes.evaluateModel(clasificadorBayes, datosTest);
+            estadisticas[0] = evaluadorBayes.weightedTruePositiveRate();
+            estadisticas[1] = evaluadorBayes.weightedFalsePositiveRate();
+            estadisticas[2] = evaluadorBayes.weightedTrueNegativeRate();
+            estadisticas[3] = evaluadorBayes.weightedFalseNegativeRate();
+            estadisticas[4] = evaluadorBayes.weightedRecall();
+            estadisticas[5] = evaluadorBayes.weightedPrecision();
+            estadisticas[6] = evaluadorBayes.weightedFMeasure();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,7 +102,7 @@ public class NaiveBayes_behaviour extends Behaviour {
             AID agenteCalculadorMedia = new AID(peticionEntrenar.getSender().getLocalName(), AID.ISLOCALNAME);
             mensajeEntrenamiento.addReceiver(agenteCalculadorMedia);
             try {
-                mensajeEntrenamiento.setContentObject(new Object[]{evaluadorBayes});
+                mensajeEntrenamiento.setContentObject(new Object[]{estadisticas});
                 this.myAgent.send(mensajeEntrenamiento);
             } catch (IOException e) {
                 e.printStackTrace();

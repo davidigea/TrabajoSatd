@@ -21,6 +21,8 @@ public class J48_behaviour extends Behaviour {
         Object[] contenidoRespuesta = null;
         Classifier clasificadorJ48 = new J48();
         Evaluation evaluadorJ48 = null;
+        double[] estadisticas = {};
+
 
         //pedir particiones
         ArrayList<AID> candidatos = Tools.BuscarAgentes(this.myAgent, "particionador");
@@ -46,6 +48,13 @@ public class J48_behaviour extends Behaviour {
             clasificadorJ48.buildClassifier(datosEntrenamiento);
             evaluadorJ48 = new Evaluation(datosEntrenamiento);
             evaluadorJ48.evaluateModel(clasificadorJ48, datosTest);
+            estadisticas[0] = evaluadorJ48.weightedTruePositiveRate();
+            estadisticas[1] = evaluadorJ48.weightedFalsePositiveRate();
+            estadisticas[2] = evaluadorJ48.weightedTrueNegativeRate();
+            estadisticas[3] = evaluadorJ48.weightedFalseNegativeRate();
+            estadisticas[4] = evaluadorJ48.weightedRecall();
+            estadisticas[5] = evaluadorJ48.weightedPrecision();
+            estadisticas[6] = evaluadorJ48.weightedFMeasure();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,7 +68,7 @@ public class J48_behaviour extends Behaviour {
             AID agenteCalculadorMedia = new AID(peticionEntrenar.getSender().getLocalName(), AID.ISLOCALNAME);
             mensajeEntrenamiento.addReceiver(agenteCalculadorMedia);
             try {
-                mensajeEntrenamiento.setContentObject(new Object[]{evaluadorJ48});
+                mensajeEntrenamiento.setContentObject(new Object[]{estadisticas});
                 this.myAgent.send(mensajeEntrenamiento);
             } catch (IOException e) {
                 e.printStackTrace();

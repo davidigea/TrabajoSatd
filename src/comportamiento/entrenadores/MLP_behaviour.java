@@ -21,6 +21,7 @@ public class MLP_behaviour extends Behaviour {
         Object[] contenidoRespuesta = null;
         Classifier clasificadorMLP = new MultilayerPerceptron();
         Evaluation evaluadorMLP = null;
+        double[] estadisticas = {};
 
         //pedir particiones
         ArrayList<AID> candidatos = Tools.BuscarAgentes(this.myAgent, "particionador");
@@ -46,6 +47,13 @@ public class MLP_behaviour extends Behaviour {
             clasificadorMLP.buildClassifier(datosEntrenamiento);
             evaluadorMLP = new Evaluation(datosEntrenamiento);
             evaluadorMLP.evaluateModel(clasificadorMLP, datosTest);
+            estadisticas[0] = evaluadorMLP.weightedTruePositiveRate();
+            estadisticas[1] = evaluadorMLP.weightedFalsePositiveRate();
+            estadisticas[2] = evaluadorMLP.weightedTrueNegativeRate();
+            estadisticas[3] = evaluadorMLP.weightedFalseNegativeRate();
+            estadisticas[4] = evaluadorMLP.weightedRecall();
+            estadisticas[5] = evaluadorMLP.weightedPrecision();
+            estadisticas[6] = evaluadorMLP.weightedFMeasure();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,7 +67,7 @@ public class MLP_behaviour extends Behaviour {
             AID agenteCalculadorMedia = new AID(peticionEntrenar.getSender().getLocalName(), AID.ISLOCALNAME);
             mensajeEntrenamiento.addReceiver(agenteCalculadorMedia);
             try {
-                mensajeEntrenamiento.setContentObject(new Object[]{evaluadorMLP});
+                mensajeEntrenamiento.setContentObject(new Object[]{estadisticas});
                 this.myAgent.send(mensajeEntrenamiento);
             } catch (IOException e) {
                 e.printStackTrace();
