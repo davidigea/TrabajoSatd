@@ -28,19 +28,21 @@ public class Media_behaviour extends Behaviour {
         ACLMessage respuestaFichero = null;
         String nombreReceptor = "";
         double[] datos = null;
-        ArrayList<String> nombresAgentes = new ArrayList<>();
+        ArrayList<Integer> agentesUsados = new ArrayList<>();
         boolean elegidoNuevo = false;
         AID agenteModelo = null;
 
         for(int i=0;i<num;i++){     //Pedir num resultados
-            ArrayList<AID> candidatos = Tools.BuscarAgentes(this.myAgent, modelo);              //Elegir del mismo modelo
+            ArrayList<AID> candidatos = Tools.BuscarAgentes(this.myAgent, modelo);              //Elegir uno del mismo modelo
             elegidoNuevo = false;
             while(!elegidoNuevo){
                 int elegido = (int) Math.random()*((candidatos.size()-1)+1);
-                agenteModelo = new AID(candidatos.get(elegido).getLocalName(), AID.ISLOCALNAME);
-                if(!nombresAgentes.contains(agenteModelo.getLocalName())                        //Elegir un no tratado TODO: (no bastaría con guardar int de elegido?)
-                        && agenteModelo.getLocalName().contains(String.valueOf(percentage))){   //Elegir del mismo %
-                    elegidoNuevo = true;
+                if(!agentesUsados.contains(elegido)){                                           //Elegir uno no tratado
+                    agenteModelo = new AID(candidatos.get(elegido).getLocalName(), AID.ISLOCALNAME);
+                    if(agenteModelo.getLocalName().contains(String.valueOf(percentage))){       //Elegir uno del mismo porcentaje
+                        elegidoNuevo = true;
+                        agentesUsados.add(elegido);
+                    }
                 }
             }
 
@@ -50,7 +52,7 @@ public class Media_behaviour extends Behaviour {
             System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y acabo de enviar una " +
                     "petición de resultados del modelo "+ modelo +" al agente " + agenteModelo.getLocalName());
 
-            while (!nombreReceptor.equals(modelo)) {
+            while (!nombreReceptor.contains(modelo)) {
                 respuestaFichero = this.myAgent.blockingReceive();
                 nombreReceptor = respuestaFichero.getSender().getLocalName();
                 ACLMessage rechazo = new ACLMessage(ACLMessage.REFUSE);
@@ -59,7 +61,7 @@ public class Media_behaviour extends Behaviour {
             }
             System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y acabo de recibir" +
                     " resultados del agente " + agenteModelo.getLocalName());
-            nombresAgentes.add(agenteModelo.getLocalName());
+
 
             try {
                 datos = (double[]) respuestaFichero.getContentObject();

@@ -39,7 +39,7 @@ public class Start_Behaviour extends Behaviour {
             argumentos = new Object[]{"media", new Media_behaviour(1,80,"bayes")};
             agents.add(cc.createNewAgent("media", "agentes.AgenteBase", argumentos));
 //
-//            argumentos = new Object[]{"mostrador", new Mostrador_behaviour()};
+//            argumentos = new Object[]{"mostrador", new Mostrador_behaviour(3,3)};
 //            agents.add(cc.createNewAgent("mostrador", "agentes.AgenteBase", argumentos));
 
             //Se recorre el array de agentes y se ponen en marcha
