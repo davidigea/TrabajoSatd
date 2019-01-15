@@ -67,8 +67,14 @@ public class Media_behaviour extends Behaviour {
                 e.printStackTrace();
             }
             entrada[i] = datos;
-        }
 
+            System.out.println(datos);
+        }
+        try {
+            Thread.sleep(100000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         //Medias
 
     }

@@ -71,11 +71,6 @@ public class NaiveBayes_behaviour extends Behaviour {
 
         System.out.println("Tamaño de los datos de entrenamiento en bayes:");
         System.out.println(datosEntrenamiento.size());
-        try {
-            Thread.sleep(1000000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         //crear clasificador y evaluador bayesianos
         try {

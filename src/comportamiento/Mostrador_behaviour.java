@@ -4,9 +4,9 @@ import jade.core.behaviours.Behaviour;
 
 public class Mostrador_behaviour extends Behaviour {
 
-    int[] veinte;           // ¿O hacerlo menos acoplado?
-    int[] cincuenta;
-    int[] ochenta;
+    double[] veinte;           // ¿O hacerlo menos acoplado?
+    double[] cincuenta;
+    double[] ochenta;
 
     @Override
     public void action() {

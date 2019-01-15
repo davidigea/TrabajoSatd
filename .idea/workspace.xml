@@ -5,8 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/comportamiento/Media_behaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/comportamiento/Media_behaviour.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/comportamiento/Mostrador_behaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/comportamiento/Mostrador_behaviour.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comportamiento/entrenadores/J48_behaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/comportamiento/entrenadores/J48_behaviour.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comportamiento/entrenadores/MLP_behaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/comportamiento/entrenadores/MLP_behaviour.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comportamiento/Start_Behaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/comportamiento/Start_Behaviour.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/comportamiento/entrenadores/NaiveBayes_behaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/comportamiento/entrenadores/NaiveBayes_behaviour.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -18,15 +17,33 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/comportamiento/Media_behaviour.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-578">
-              <caret line="17" column="12" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
+            <state relative-caret-position="376">
+              <caret line="70" column="12" lean-forward="true" selection-start-line="70" selection-start-column="12" selection-end-line="70" selection-end-column="12" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#3147#3148#0" expanded="true" />
+                <element signature="e#3328#3329#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/comportamiento/Start_Behaviour.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="38" column="68" selection-start-line="38" selection-start-column="68" selection-end-line="38" selection-end-column="68" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/comportamiento/Mostrador_behaviour.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -34,8 +51,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/comportamiento/Particionador_behaviour.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="72" column="94" selection-start-line="72" selection-start-column="94" selection-end-line="72" selection-end-column="94" />
+            <state relative-caret-position="529">
+              <caret line="78" column="36" lean-forward="true" selection-start-line="78" selection-start-column="36" selection-end-line="78" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -43,17 +60,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/comportamiento/entrenadores/J48_behaviour.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
+            <state relative-caret-position="459">
               <caret line="38" column="40" selection-start-line="38" selection-start-column="34" selection-end-line="38" selection-end-column="40" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/comportamiento/entrenadores/MLP_behaviour.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="69" column="79" selection-start-line="69" selection-start-column="79" selection-end-line="69" selection-end-column="79" />
             </state>
           </provider>
         </entry>
@@ -61,8 +69,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/comportamiento/entrenadores/NaiveBayes_behaviour.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="427">
-              <caret line="104" column="79" selection-start-line="104" selection-start-column="79" selection-end-line="104" selection-end-column="79" />
+            <state relative-caret-position="2">
+              <caret line="72" column="54" lean-forward="true" selection-start-line="72" selection-start-column="54" selection-end-line="72" selection-end-column="54" />
             </state>
           </provider>
         </entry>
@@ -76,12 +84,13 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/comportamiento/LectorCSV_behaviour.java" />
-        <option value="$PROJECT_DIR$/src/comportamiento/Mostrador_behaviour.java" />
         <option value="$PROJECT_DIR$/src/comportamiento/entrenadores/MLP_behaviour.java" />
-        <option value="$PROJECT_DIR$/src/comportamiento/entrenadores/NaiveBayes_behaviour.java" />
         <option value="$PROJECT_DIR$/src/comportamiento/Particionador_behaviour.java" />
         <option value="$PROJECT_DIR$/src/comportamiento/entrenadores/J48_behaviour.java" />
+        <option value="$PROJECT_DIR$/src/comportamiento/Mostrador_behaviour.java" />
+        <option value="$PROJECT_DIR$/src/comportamiento/entrenadores/NaiveBayes_behaviour.java" />
         <option value="$PROJECT_DIR$/src/comportamiento/Media_behaviour.java" />
+        <option value="$PROJECT_DIR$/src/comportamiento/Start_Behaviour.java" />
       </list>
     </option>
   </component>
@@ -92,10 +101,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="x" value="676" />
+    <option name="width" value="697" />
+    <option name="height" value="735" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -138,7 +146,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547547827776" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547549023949" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
@@ -169,6 +177,14 @@
       <updated>1545251178111</updated>
       <workItem from="1545251182602" duration="268000" />
     </task>
+    <task id="LOCAL-00001" summary="Empezados agentes media y mostrador y modificados los 3 agentes modelo">
+      <created>1547547916202</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1547547916202</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -212,6 +228,10 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Empezados agentes media y mostrador y modificados los 3 agentes modelo" />
+    <option name="LAST_COMMIT_MESSAGE" value="Empezados agentes media y mostrador y modificados los 3 agentes modelo" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/comportamiento/LectorCSV_behaviour.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -223,26 +243,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/comportamiento/Start_Behaviour.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/comportamiento/Mostrador_behaviour.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/comportamiento/entrenadores/NaiveBayes_behaviour.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
-          <caret line="104" column="79" selection-start-line="104" selection-start-column="79" selection-end-line="104" selection-end-column="79" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/comportamiento/entrenadores/MLP_behaviour.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -253,26 +255,47 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/comportamiento/entrenadores/J48_behaviour.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
+        <state relative-caret-position="459">
           <caret line="38" column="40" selection-start-line="38" selection-start-column="34" selection-end-line="38" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/comportamiento/Mostrador_behaviour.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/comportamiento/Particionador_behaviour.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="72" column="94" selection-start-line="72" selection-start-column="94" selection-end-line="72" selection-end-column="94" />
+        <state relative-caret-position="529">
+          <caret line="78" column="36" lean-forward="true" selection-start-line="78" selection-start-column="36" selection-end-line="78" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/comportamiento/entrenadores/NaiveBayes_behaviour.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2">
+          <caret line="72" column="54" lean-forward="true" selection-start-line="72" selection-start-column="54" selection-end-line="72" selection-end-column="54" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/comportamiento/Media_behaviour.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-578">
-          <caret line="17" column="12" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
+        <state relative-caret-position="376">
+          <caret line="70" column="12" lean-forward="true" selection-start-line="70" selection-start-column="12" selection-end-line="70" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3147#3148#0" expanded="true" />
+            <element signature="e#3328#3329#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/comportamiento/Start_Behaviour.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="38" column="68" selection-start-line="38" selection-start-column="68" selection-end-line="38" selection-end-column="68" />
         </state>
       </provider>
     </entry>

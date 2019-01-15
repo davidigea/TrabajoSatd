@@ -1,5 +1,7 @@
 package comportamiento;
 
+import comportamiento.entrenadores.J48_behaviour;
+import comportamiento.entrenadores.MLP_behaviour;
 import comportamiento.entrenadores.NaiveBayes_behaviour;
 import jade.core.behaviours.Behaviour;
 import jade.wrapper.AgentController;
@@ -27,6 +29,18 @@ public class Start_Behaviour extends Behaviour {
 
             argumentos = new Object[]{"bayes", new NaiveBayes_behaviour()};
             agents.add(cc.createNewAgent("bayes", "agentes.AgenteBase", argumentos));
+
+//            argumentos = new Object[]{"j48", new J48_behaviour()};
+//            agents.add(cc.createNewAgent("j48", "agentes.AgenteBase", argumentos));
+//
+//            argumentos = new Object[]{"mlp", new MLP_behaviour()};
+//            agents.add(cc.createNewAgent("mlp", "agentes.AgenteBase", argumentos));
+//
+            argumentos = new Object[]{"media", new Media_behaviour(1,80,"bayes")};
+            agents.add(cc.createNewAgent("media", "agentes.AgenteBase", argumentos));
+//
+//            argumentos = new Object[]{"mostrador", new Mostrador_behaviour()};
+//            agents.add(cc.createNewAgent("mostrador", "agentes.AgenteBase", argumentos));
 
             //Se recorre el array de agentes y se ponen en marcha
             for (int i=0; i<agents.size(); i++) {
