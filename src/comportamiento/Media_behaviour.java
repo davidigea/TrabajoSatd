@@ -5,8 +5,8 @@ import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import utils.Tools;
-import weka.core.Instances;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Media_behaviour extends Behaviour {
@@ -38,7 +38,7 @@ public class Media_behaviour extends Behaviour {
             while(!elegidoNuevo){
                 int elegido = (int) Math.random()*((candidatos.size()-1)+1);
                 agenteModelo = new AID(candidatos.get(elegido).getLocalName(), AID.ISLOCALNAME);
-                if(!nombresAgentes.contains(agenteModelo.getLocalName())                        //Elegir un no tratado
+                if(!nombresAgentes.contains(agenteModelo.getLocalName())                        //Elegir un no tratado TODO: (no bastaría con guardar int de elegido?)
                         && agenteModelo.getLocalName().contains(String.valueOf(percentage))){   //Elegir del mismo %
                     elegidoNuevo = true;
                 }
@@ -75,7 +75,36 @@ public class Media_behaviour extends Behaviour {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //Medias
+
+        //Hacer las medias de las estadísticas
+        for(int i = 0; i<7;i++){
+            for (int j = 0; j<num; j++){
+                salida[i] += entrada[j][i];     //salida[i] es la suma de la columna i de entrada
+            }
+            salida[i] /= num;                   //salida[i] es la media de la columna i de entrada
+        }
+
+        while (true) {
+            //esperar petición de medias
+            ACLMessage peticionParticionar = this.myAgent.blockingReceive();
+            System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y acabo de recibir una petición" +
+                    " de medias del agente " + peticionParticionar.getSender());
+
+            //enviar fichero
+            ACLMessage mensajeParticiones = new ACLMessage(ACLMessage.REQUEST);
+            AID agenteMostrador = new AID(peticionParticionar.getSender().getLocalName(), AID.ISLOCALNAME);
+            mensajeParticiones.addReceiver(agenteMostrador);
+
+            try {
+                mensajeParticiones.setContentObject(new Object[]{salida, percentage, modelo});
+                this.myAgent.send(mensajeParticiones);
+                Thread.sleep(1000000);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 

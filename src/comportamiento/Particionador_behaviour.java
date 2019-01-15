@@ -66,7 +66,7 @@ public class Particionador_behaviour extends Behaviour {
 
             //enviar fichero
             ACLMessage mensajeParticiones = new ACLMessage(ACLMessage.REQUEST);
-            AID agenteNaiveBayes = new AID(peticionParticionar.getSender().getLocalName(), AID.ISLOCALNAME);
+            AID agenteNaiveBayes = new AID(peticionParticionar.getSender().getLocalName(), AID.ISLOCALNAME);     //TODO: POR QUÉ NAIVEBAYES?
             mensajeParticiones.addReceiver(agenteNaiveBayes);
 
             try {
