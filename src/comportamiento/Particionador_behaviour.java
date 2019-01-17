@@ -71,6 +71,7 @@ public class Particionador_behaviour extends Behaviour {
         datosTest = new Instances(datos, tamanyoTrozoEntrenamiento, tamanyoTrozoTest);
 
         ArrayList<String> modelosEntregados = new ArrayList<>();
+        ArrayList<AID> agentesUsados = new ArrayList<>();
         while (modelosEntregados.size()<numModelos) {
             //esperar petición de particiones
             ACLMessage peticionParticionar = this.myAgent.blockingReceive();
@@ -92,7 +93,36 @@ public class Particionador_behaviour extends Behaviour {
                     e.printStackTrace();
                 }
                 modelosEntregados.add(modeloEmisor);
+                agentesUsados.add(agenteModelo);
             } else {
+                //rechazar envío
+                ACLMessage rechazo = new ACLMessage(ACLMessage.CANCEL);
+                rechazo.addReceiver(new AID(nombreEmisor, AID.ISLOCALNAME));
+                this.myAgent.send(rechazo);
+                System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                        this.myAgent.getLocalName(),"ENV","Rechazo Datos", nombreEmisor);
+            }
+        }
+
+        boolean avisoMuerte = false;
+        while(!avisoMuerte){
+            ACLMessage peticionParticionar = this.myAgent.blockingReceive();
+            String nombreEmisor = peticionParticionar.getSender().getLocalName();
+            if(nombreEmisor.equals("lector")){
+                System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                        this.myAgent.getLocalName(),"REC","Aviso Finalización", nombreEmisor);
+                avisoMuerte = true;
+                for(AID agente : agentesUsados){
+                    ACLMessage mensajeFichero = new ACLMessage(ACLMessage.REQUEST);
+                    mensajeFichero.addReceiver(agente);
+                    this.myAgent.send(mensajeFichero);
+                    System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                            this.myAgent.getLocalName(), "ENV", "Aviso Finalización", agente.getLocalName());
+                }
+            } else {
+                System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                        this.myAgent.getLocalName(),"REC","Petición Datos", nombreEmisor);
+
                 //rechazar envío
                 ACLMessage rechazo = new ACLMessage(ACLMessage.CANCEL);
                 rechazo.addReceiver(new AID(nombreEmisor, AID.ISLOCALNAME));

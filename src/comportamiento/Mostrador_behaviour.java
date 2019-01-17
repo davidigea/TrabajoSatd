@@ -107,6 +107,18 @@ public class Mostrador_behaviour extends Behaviour {
         pintarResultadosMatriz(tablaDatos);
         System.out.println(linea);
         System.out.println("\n\n");
+
+        ArrayList<AID> lector = Tools.BuscarAgentes(this.myAgent, "lector");
+        Random r = new Random();
+        int elegido = r.nextInt(lector.size());
+        AID agenteLector = new AID(lector.get(elegido).getLocalName(), AID.ISLOCALNAME);
+
+        ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+        msg.addReceiver(agenteLector);
+        this.myAgent.send(msg);
+        System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                this.myAgent.getLocalName(),"ENV","Aviso de Finalización", agenteLector.getLocalName());
+
     }
 
     /* Pinta los resultados en el orden pasado con el formato adecuado */

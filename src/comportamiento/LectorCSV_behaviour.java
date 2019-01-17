@@ -12,9 +12,10 @@ import weka.filters.unsupervised.attribute.StringToWordVector;
 import javax.sound.midi.SysexMessage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LectorCSV_behaviour extends Behaviour {
-    String path;
+    private String path;
     CSVReader reader;
 
     public LectorCSV_behaviour(String path){
@@ -52,8 +53,8 @@ public class LectorCSV_behaviour extends Behaviour {
 
     @Override
     public void action() {
-        String[] fila;
         Instances fichero = null;
+        ArrayList<AID> particionadores = new ArrayList<>();
 
         try {
             fichero = getDataSet(path);
@@ -62,29 +63,48 @@ public class LectorCSV_behaviour extends Behaviour {
         }
 
         ACLMessage peticionFichero;
-        while (true) {
+        boolean avisoMuerte = false;
+        while (!avisoMuerte) {
             //Esperar a una petición de fichero
             peticionFichero = this.myAgent.blockingReceive();
-            System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
-                    this.myAgent.getLocalName(),"REC","Petición Fichero", peticionFichero.getSender().getLocalName());
-            ACLMessage mensajeFichero = new ACLMessage(ACLMessage.REQUEST);
-            AID agenteParticionador = new AID(peticionFichero.getSender().getLocalName(), AID.ISLOCALNAME);
-            mensajeFichero.addReceiver(agenteParticionador);
-            try {
-                mensajeFichero.setContentObject(fichero);
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(peticionFichero.getSender().getLocalName().equals("mostrador")){
+                System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                        this.myAgent.getLocalName(),"REC","Aviso Finalización", peticionFichero.getSender().getLocalName());
+                avisoMuerte = true;
+                //Enviar muerte a todos los particionadores
+                for (AID p : particionadores) {
+                    ACLMessage mensajeFichero = new ACLMessage(ACLMessage.REQUEST);
+                    mensajeFichero.addReceiver(p);
+                    this.myAgent.send(mensajeFichero);
+                    System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                            this.myAgent.getLocalName(), "ENV", "Aviso Finalización", p.getLocalName());
+                }
+            }else {
+                System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                        this.myAgent.getLocalName(),"REC","Petición Fichero", peticionFichero.getSender().getLocalName());
+                ACLMessage mensajeFichero = new ACLMessage(ACLMessage.REQUEST);
+                AID agenteParticionador = new AID(peticionFichero.getSender().getLocalName(), AID.ISLOCALNAME);
+                mensajeFichero.addReceiver(agenteParticionador);
+                try {
+                    mensajeFichero.setContentObject(fichero);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                //Envía un array con el contenido del fichero
+                this.myAgent.send(mensajeFichero);
+                System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                        this.myAgent.getLocalName(),"ENV","Fichero", peticionFichero.getSender().getLocalName());
+                particionadores.add(agenteParticionador);
             }
 
-            //Envía un array con el contenido del fichero
-            this.myAgent.send(mensajeFichero);
-            System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
-                        this.myAgent.getLocalName(),"ENV","Fichero", peticionFichero.getSender().getLocalName());
         }
     }
 
     @Override
     public boolean done() {
-        return false;
+        System.out.printf("Agente %-18s : %s\n",
+                this.myAgent.getLocalName(),"DEP");
+        return true;
     }
 }

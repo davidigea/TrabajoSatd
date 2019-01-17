@@ -28,16 +28,18 @@ public class Start_Behaviour extends Behaviour {
         porcentajes = new ArrayList<>();
 
         //Para versión final
-        //try { datos(); } catch (IOException e) { e.printStackTrace(); }
+        try { datos(); } catch (IOException e) { e.printStackTrace(); }
 
-        //Para pruebas:
+/*         //Para pruebas:
         modelos.add("bayes");
         modelos.add("j48");
+        modelos.add("mlp");
         porcentajes.add("80");
         porcentajes.add("50");
+        porcentajes.add("20");
         fileName = "yellow-small.arff";
-        numIteraciones = 1;
-
+        numIteraciones = 2;
+*/
         try {
             Thread.sleep(3000);
             //Se añaden al array de agentes todos los agentes que se vayan a lanzar
@@ -57,9 +59,17 @@ public class Start_Behaviour extends Behaviour {
                             "agentes.AgenteBase", argumentos));
                     for (String modelo : modelos) {
                         Behaviour beh = null;
-                        if (modelo.equals("bayes")) beh = new NaiveBayes_behaviour();
-                        else if (modelo.equals("j48")) beh = new J48_behaviour();
-                        else if (modelo.equals("mlp")) beh = new MLP_behaviour();
+                        switch (modelo) {
+                            case "bayes":
+                                beh = new NaiveBayes_behaviour();
+                                break;
+                            case "j48":
+                                beh = new J48_behaviour();
+                                break;
+                            case "mlp":
+                                beh = new MLP_behaviour();
+                                break;
+                        }
                         argumentos = new Object[]{modelo, beh};
                         agents.add(cc.createNewAgent(modelo + "_" + (10 * j + i + 1),
                                 "agentes.AgenteBase", argumentos));
@@ -87,7 +97,7 @@ public class Start_Behaviour extends Behaviour {
     /* Pide los datos del programa por consola */
     private void datos() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Inserte un nombre de fichero:");
+        System.out.println("Inserte un nombre de fichero ('-' para fichero por defecto):");
         fileName = br.readLine();
         if (fileName.equals("-")) fileName = "yellow-small.arff";
         System.out.println("Inserte los modelos, separados por comas, en minúsculas:");

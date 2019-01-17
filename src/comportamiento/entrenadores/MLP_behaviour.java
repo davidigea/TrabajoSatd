@@ -146,6 +146,27 @@ public class MLP_behaviour extends Behaviour {
                         this.myAgent.getLocalName(),"ENV","Rechazo MLP Entrenado", nombreEmisor);
             }
         }
+
+        boolean avisoMuerte = false;
+        while(!avisoMuerte){
+            ACLMessage peticionModelo = this.myAgent.blockingReceive();
+            String nombreEmisor = peticionModelo.getSender().getLocalName();
+            if(nombreEmisor.contains("particionador")){
+                System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                        this.myAgent.getLocalName(),"REC","Aviso Finalización", nombreEmisor);
+                avisoMuerte = true;
+            } else {
+                System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                        this.myAgent.getLocalName(),"REC","Petición MLP Entrenado", nombreEmisor);
+
+                //rechazar envío
+                ACLMessage rechazo = new ACLMessage(ACLMessage.CANCEL);
+                rechazo.addReceiver(new AID(nombreEmisor, AID.ISLOCALNAME));
+                this.myAgent.send(rechazo);
+                System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                        this.myAgent.getLocalName(),"ENV","Rechazo MLP Entrenado", nombreEmisor);
+            }
+        }
     }
 
     @Override
