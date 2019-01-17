@@ -65,7 +65,7 @@ public class Particionador_behaviour extends Behaviour {
         }
 
         //particionar fichero
-        int tamanyoTrozoEntrenamiento = datos.size()*percentage/100;
+        int tamanyoTrozoEntrenamiento = datos.size() * percentage / 100;
         int tamanyoTrozoTest = datos.size() - tamanyoTrozoEntrenamiento;
         datosEntrenamiento = new Instances(datos, 0, tamanyoTrozoEntrenamiento);
         datosTest = new Instances(datos, tamanyoTrozoEntrenamiento, tamanyoTrozoTest);

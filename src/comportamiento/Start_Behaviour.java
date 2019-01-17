@@ -45,6 +45,7 @@ public class Start_Behaviour extends Behaviour {
             //Se añaden al array de agentes todos los agentes que se vayan a lanzar
             ArrayList<AgentController> agents = new ArrayList<>();
 
+            //Los agentes lector y mostrador se añaden de forma estática
             Object[] argumentos = {"lector", new LectorCSV_behaviour("data/" + fileName)};
             agents.add(cc.createNewAgent("lector", "agentes.AgenteBase", argumentos));
 
