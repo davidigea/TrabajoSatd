@@ -9,13 +9,16 @@ import weka.core.Instances;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Particionador_behaviour extends Behaviour {
-    int percentage;
-    Instances datos;
+    private int percentage;
+    private int numModelos;
+    private Instances datos;
 
-    public Particionador_behaviour(int percentage){
+    public Particionador_behaviour(int percentage, int numModelos){
         this.percentage = percentage;
+        this.numModelos = numModelos;
     }
 
     @Override
@@ -23,28 +26,37 @@ public class Particionador_behaviour extends Behaviour {
         ACLMessage respuestaFichero = null;
         Instances datosEntrenamiento;
         Instances datosTest;
-        String nombreReceptor = "";
+        String nombreReceptor;
 
         //pedir fichero
         ArrayList<AID> candidatos = Tools.BuscarAgentes(this.myAgent, "lector");
-        int elegido = (int) Math.random()*((candidatos.size()-1)+1);
+        Random r = new Random();
+        int elegido = r.nextInt(candidatos.size());
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
         AID agenteLector = new AID(candidatos.get(elegido).getLocalName(), AID.ISLOCALNAME);
         msg.addReceiver(agenteLector);
         this.myAgent.send(msg);
-        System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y acabo de enviar una " +
-                            "petición de fichero CSV al agente " + agenteLector.getLocalName());
+        System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                this.myAgent.getLocalName(),"ENV","Petición Fichero", agenteLector.getLocalName());
 
         //recibir fichero
-        while (!nombreReceptor.equals("lector")) {
+        boolean recibeDeLector = false;
+        while (!recibeDeLector) {
             respuestaFichero = this.myAgent.blockingReceive();
             nombreReceptor = respuestaFichero.getSender().getLocalName();
-            ACLMessage rechazo = new ACLMessage(ACLMessage.REFUSE);
-            AID destinatario = new AID(nombreReceptor, AID.ISLOCALNAME);
-            rechazo.addReceiver(destinatario);
+            recibeDeLector = nombreReceptor.equals("lector");
+            if(!recibeDeLector){
+                System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                        this.myAgent.getLocalName(),"REC","Petición A Destiempo", nombreReceptor);
+                ACLMessage rechazo = new ACLMessage(ACLMessage.REFUSE);
+                rechazo.addReceiver(new AID(nombreReceptor, AID.ISLOCALNAME));
+                this.myAgent.send(rechazo);
+                System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                        this.myAgent.getLocalName(),"ENV","Rechazo", nombreReceptor);
+            }
         }
-        System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y acabo de recibir un" +
-                " fichero CSV del agente " + agenteLector.getLocalName());
+        System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                this.myAgent.getLocalName(),"REC","Fichero", agenteLector.getLocalName());
 
         try {
             datos = (Instances) respuestaFichero.getContentObject();
@@ -58,31 +70,43 @@ public class Particionador_behaviour extends Behaviour {
         datosEntrenamiento = new Instances(datos, 0, tamanyoTrozoEntrenamiento);
         datosTest = new Instances(datos, tamanyoTrozoEntrenamiento, tamanyoTrozoTest);
 
-        while (true) {
+        ArrayList<String> modelosEntregados = new ArrayList<>();
+        while (modelosEntregados.size()<numModelos) {
             //esperar petición de particiones
             ACLMessage peticionParticionar = this.myAgent.blockingReceive();
-            System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y acabo de recibir una petición" +
-                    " de datos de entrenamiento del agente " + peticionParticionar.getSender());
-
-            //enviar fichero
-            ACLMessage mensajeParticiones = new ACLMessage(ACLMessage.REQUEST);
-            AID agenteNaiveBayes = new AID(peticionParticionar.getSender().getLocalName(), AID.ISLOCALNAME);     //TODO: POR QUÉ NAIVEBAYES?
-            mensajeParticiones.addReceiver(agenteNaiveBayes);
-
-            try {
-                mensajeParticiones.setContentObject(new Object[]{datosEntrenamiento, datosTest});
-                this.myAgent.send(mensajeParticiones);
-                Thread.sleep(1000000);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            String nombreEmisor = peticionParticionar.getSender().getLocalName();
+            System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                    this.myAgent.getLocalName(),"REC","Petición Datos", nombreEmisor);
+            String modeloEmisor = nombreEmisor.split("_")[0];
+            if(!modelosEntregados.contains(modeloEmisor)){
+                //enviar fichero
+                ACLMessage mensajeParticiones = new ACLMessage(ACLMessage.REQUEST);
+                AID agenteModelo = new AID(peticionParticionar.getSender().getLocalName(), AID.ISLOCALNAME);
+                mensajeParticiones.addReceiver(agenteModelo);
+                try {
+                    mensajeParticiones.setContentObject(new Object[]{datosEntrenamiento, datosTest, percentage});
+                    this.myAgent.send(mensajeParticiones);
+                    System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                            this.myAgent.getLocalName(),"ENV","Datos", nombreEmisor);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                modelosEntregados.add(modeloEmisor);
+            } else {
+                //rechazar envío
+                ACLMessage rechazo = new ACLMessage(ACLMessage.CANCEL);
+                rechazo.addReceiver(new AID(nombreEmisor, AID.ISLOCALNAME));
+                this.myAgent.send(rechazo);
+                System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                        this.myAgent.getLocalName(),"ENV","Rechazo Datos", nombreEmisor);
             }
         }
     }
 
     @Override
     public boolean done() {
-        return false;
+        System.out.printf("Agente %-18s : %s\n",
+                this.myAgent.getLocalName(),"DEP");
+        return true;
     }
 }

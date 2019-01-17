@@ -8,6 +8,7 @@ import utils.Tools;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Media_behaviour extends Behaviour {
 
@@ -25,57 +26,78 @@ public class Media_behaviour extends Behaviour {
 
     @Override
     public void action() {
-        ACLMessage respuestaFichero = null;
-        String nombreReceptor = "";
-        double[] datos = null;
+        ACLMessage msgRecibido = null;
+        double[] datos = new double[7];
         ArrayList<Integer> agentesUsados = new ArrayList<>();
-        boolean elegidoNuevo = false;
+        boolean elegidoNuevo;
         AID agenteModelo = null;
+        entrada = new double[num][7];
+        salida = new double[7];
 
         for(int i=0;i<num;i++){     //Pedir num resultados
             ArrayList<AID> candidatos = Tools.BuscarAgentes(this.myAgent, modelo);              //Elegir uno del mismo modelo
             elegidoNuevo = false;
             while(!elegidoNuevo){
-                int elegido = (int) Math.random()*((candidatos.size()-1)+1);
+                Random r = new Random();
+                int elegido = r.nextInt(candidatos.size());
                 if(!agentesUsados.contains(elegido)){                                           //Elegir uno no tratado
                     agenteModelo = new AID(candidatos.get(elegido).getLocalName(), AID.ISLOCALNAME);
-                    if(agenteModelo.getLocalName().contains(String.valueOf(percentage))){       //Elegir uno del mismo porcentaje
                         elegidoNuevo = true;
                         agentesUsados.add(elegido);
-                    }
                 }
             }
-
             ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
             msg.addReceiver(agenteModelo);
             this.myAgent.send(msg);
-            System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y acabo de enviar una " +
-                    "petición de resultados del modelo "+ modelo +" al agente " + agenteModelo.getLocalName());
-
-            while (!nombreReceptor.contains(modelo)) {
-                respuestaFichero = this.myAgent.blockingReceive();
-                nombreReceptor = respuestaFichero.getSender().getLocalName();
-                ACLMessage rechazo = new ACLMessage(ACLMessage.REFUSE);
-                AID destinatario = new AID(nombreReceptor, AID.ISLOCALNAME);
-                rechazo.addReceiver(destinatario);
+            System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                    this.myAgent.getLocalName(),"ENV","Petición "+modelo+" entrenado", agenteModelo.getLocalName());
+            boolean recibeModelo = false;
+            boolean caminoEquivocado = false;
+            while(!recibeModelo && !caminoEquivocado){
+                msgRecibido = this.myAgent.blockingReceive();
+                String nombreReceptor = msgRecibido.getSender().getLocalName();
+                if(nombreReceptor.equals(agenteModelo.getLocalName())){
+                    if(msgRecibido.getPerformative() == ACLMessage.REFUSE){
+                        System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                                this.myAgent.getLocalName(),"REC","Rechazo", nombreReceptor);
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        this.myAgent.send(msg);
+                        System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                                this.myAgent.getLocalName(),"ENV","Petición "+modelo+" entrenado", agenteModelo.getLocalName());
+                    } else if(msgRecibido.getPerformative() == ACLMessage.CANCEL){
+                        caminoEquivocado = true;
+                    } else {
+                        recibeModelo = true;
+                        System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                                this.myAgent.getLocalName(),"REC",modelo+" entrenado", nombreReceptor);
+                    }
+                } else {
+                    System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                            this.myAgent.getLocalName(),"REC","Petición A Destiempo", nombreReceptor);
+                    ACLMessage rechazo = new ACLMessage(ACLMessage.REFUSE);
+                    rechazo.addReceiver(new AID(nombreReceptor, AID.ISLOCALNAME));
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    this.myAgent.send(rechazo);
+                    System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                            this.myAgent.getLocalName(),"ENV","Rechazo", nombreReceptor);
+                }
             }
-            System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y acabo de recibir" +
-                    " resultados del agente " + agenteModelo.getLocalName());
-
-
-            try {
-                datos = (double[]) respuestaFichero.getContentObject();
-            } catch (UnreadableException e) {
-                e.printStackTrace();
-            }
-            entrada[i] = datos;
-
-            System.out.println(datos);
-        }
-        try {
-            Thread.sleep(100000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            if(recibeModelo){
+                try {
+                    datos = (double[]) msgRecibido.getContentObject();
+                } catch (UnreadableException e) {
+                    e.printStackTrace();
+                }
+                entrada[i] =  datos;
+            } else i--; //Esta iteración no cuenta
         }
 
         //Hacer las medias de las estadísticas
@@ -86,32 +108,31 @@ public class Media_behaviour extends Behaviour {
             salida[i] /= num;                   //salida[i] es la media de la columna i de entrada
         }
 
-        while (true) {
-            //esperar petición de medias
-            ACLMessage peticionParticionar = this.myAgent.blockingReceive();
-            System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y acabo de recibir una petición" +
-                    " de medias del agente " + peticionParticionar.getSender());
+        //esperar petición de medias
+        ACLMessage peticionParticionar = this.myAgent.blockingReceive();
+        System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                this.myAgent.getLocalName(),"REC","Petición Medias", peticionParticionar.getSender().getLocalName());
 
-            //enviar fichero
-            ACLMessage mensajeParticiones = new ACLMessage(ACLMessage.REQUEST);
-            AID agenteMostrador = new AID(peticionParticionar.getSender().getLocalName(), AID.ISLOCALNAME);
-            mensajeParticiones.addReceiver(agenteMostrador);
+        //enviar fichero
+        ACLMessage mensajeParticiones = new ACLMessage(ACLMessage.REQUEST);
+        AID agenteMostrador = new AID(peticionParticionar.getSender().getLocalName(), AID.ISLOCALNAME);
+        mensajeParticiones.addReceiver(agenteMostrador);
 
-            try {
-                mensajeParticiones.setContentObject(new Object[]{salida, percentage, modelo});
-                this.myAgent.send(mensajeParticiones);
-                Thread.sleep(1000000);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        try {
+            mensajeParticiones.setContentObject(new Object[]{salida, percentage, modelo});
+            this.myAgent.send(mensajeParticiones);
+            System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                    this.myAgent.getLocalName(),"ENV","Medias", peticionParticionar.getSender().getLocalName());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
 
     @Override
     public boolean done() {
-        return false;
+        System.out.printf("Agente %-18s : %s\n",
+                this.myAgent.getLocalName(),"DEP");
+        return true;
     }
 }

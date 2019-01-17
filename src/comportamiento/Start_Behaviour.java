@@ -8,50 +8,96 @@ import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Start_Behaviour extends Behaviour {
+
+    private ArrayList<String> modelos;
+    private ArrayList<String> porcentajes;
+    private String fileName;
+    private int numIteraciones;
 
     @Override
     public void action() {
         ContainerController cc = myAgent.getContainerController();
+        modelos = new ArrayList<>();
+        porcentajes = new ArrayList<>();
+
+        //Para versión final
+        //try { datos(); } catch (IOException e) { e.printStackTrace(); }
+
+        //Para pruebas:
+        modelos.add("bayes");
+        modelos.add("j48");
+        porcentajes.add("80");
+        porcentajes.add("50");
+        fileName = "yellow-small.arff";
+        numIteraciones = 1;
 
         try {
             Thread.sleep(3000);
             //Se añaden al array de agentes todos los agentes que se vayan a lanzar
             ArrayList<AgentController> agents = new ArrayList<>();
 
-            Object[] argumentos = {"lector", new LectorCSV_behaviour("data/yellow-small.arff")};
-            agents.add(cc.createNewAgent("lector", "agentes.AgenteBase",argumentos));
+            Object[] argumentos = {"lector", new LectorCSV_behaviour("data/" + fileName)};
+            agents.add(cc.createNewAgent("lector", "agentes.AgenteBase", argumentos));
 
-            argumentos = new Object[]{"particionador", new Particionador_behaviour(80)};
-            agents.add(cc.createNewAgent("particionador", "agentes.AgenteBase", argumentos));
+            argumentos = new Object[]{"mostrador", new Mostrador_behaviour(modelos.size(), porcentajes.size())};
+            agents.add(cc.createNewAgent("mostrador", "agentes.AgenteBase", argumentos));
 
-            argumentos = new Object[]{"bayes", new NaiveBayes_behaviour()};
-            agents.add(cc.createNewAgent("bayes", "agentes.AgenteBase", argumentos));
-
-//            argumentos = new Object[]{"j48", new J48_behaviour()};
-//            agents.add(cc.createNewAgent("j48", "agentes.AgenteBase", argumentos));
-//
-//            argumentos = new Object[]{"mlp", new MLP_behaviour()};
-//            agents.add(cc.createNewAgent("mlp", "agentes.AgenteBase", argumentos));
-//
-            argumentos = new Object[]{"media", new Media_behaviour(1,80,"bayes")};
-            agents.add(cc.createNewAgent("media", "agentes.AgenteBase", argumentos));
-//
-//            argumentos = new Object[]{"mostrador", new Mostrador_behaviour(3,3)};
-//            agents.add(cc.createNewAgent("mostrador", "agentes.AgenteBase", argumentos));
+            for (int j = 0; j < porcentajes.size(); j++) {
+                String por = porcentajes.get(j);
+                for (int i = 0; i < numIteraciones; i++) {
+                    argumentos = new Object[]{"particionador", new Particionador_behaviour(Integer.parseInt(por),modelos.size())};
+                    agents.add(cc.createNewAgent("particionador_" + por + "_" + (i + 1),
+                            "agentes.AgenteBase", argumentos));
+                    for (String modelo : modelos) {
+                        Behaviour beh = null;
+                        if (modelo.equals("bayes")) beh = new NaiveBayes_behaviour();
+                        else if (modelo.equals("j48")) beh = new J48_behaviour();
+                        else if (modelo.equals("mlp")) beh = new MLP_behaviour();
+                        argumentos = new Object[]{modelo, beh};
+                        agents.add(cc.createNewAgent(modelo + "_" + (10 * j + i + 1),
+                                "agentes.AgenteBase", argumentos));
+                    }
+                }
+                for (String mod : modelos) {
+                    argumentos = new Object[]{"media", new Media_behaviour(numIteraciones, (Integer.parseInt(por)), mod)};
+                    agents.add(cc.createNewAgent("media_" + mod + "_" + por, "agentes.AgenteBase", argumentos));
+                }
+            }
 
             //Se recorre el array de agentes y se ponen en marcha
-            for (int i=0; i<agents.size(); i++) {
-                System.out.println("Arrancando agente " + agents.get(i).getName() + "...");
-                agents.get(i).start();
+            for (AgentController agent : agents) {
+                System.out.println("Arrancando agente " + agent.getName() + "...");
+                agent.start();
             }
+
         } catch (StaleProxyException e) {
             System.out.println(e.getMessage());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /* Pide los datos del programa por consola */
+    private void datos() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Inserte un nombre de fichero:");
+        fileName = br.readLine();
+        if (fileName.equals("-")) fileName = "yellow-small.arff";
+        System.out.println("Inserte los modelos, separados por comas, en minúsculas:");
+        String[] aux = br.readLine().split(",");
+        Collections.addAll(modelos, aux);
+        System.out.println("Inserte los porcentajes, separados por comas (numéricamente):");
+        aux = br.readLine().split(",");
+        Collections.addAll(porcentajes, aux);
+        System.out.println("Inserte el número de iteraciones (numéricamente):");
+        numIteraciones = Integer.parseInt(br.readLine());
     }
 
     @Override

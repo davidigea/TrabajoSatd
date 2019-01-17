@@ -9,6 +9,7 @@ import weka.core.converters.ArffLoader;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
+import javax.sound.midi.SysexMessage;
 import java.io.File;
 import java.io.IOException;
 
@@ -27,7 +28,7 @@ public class LectorCSV_behaviour extends Behaviour {
      * @return
      * @throws Exception
      */
-    public static Instances getDataSet(String fileName) throws Exception {
+    private static Instances getDataSet(String fileName) throws Exception {
         /**
          * we can set the file i.e., loader.setFile("finename") to load the data
          */
@@ -51,7 +52,6 @@ public class LectorCSV_behaviour extends Behaviour {
 
     @Override
     public void action() {
-        System.out.println("soooy el lector");
         String[] fila;
         Instances fichero = null;
 
@@ -65,12 +65,11 @@ public class LectorCSV_behaviour extends Behaviour {
         while (true) {
             //Esperar a una petición de fichero
             peticionFichero = this.myAgent.blockingReceive();
-            System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y he recibido" +
-                    " una petición de fichero del agente " + peticionFichero.getSender().getLocalName());
+            System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                    this.myAgent.getLocalName(),"REC","Petición Fichero", peticionFichero.getSender().getLocalName());
             ACLMessage mensajeFichero = new ACLMessage(ACLMessage.REQUEST);
             AID agenteParticionador = new AID(peticionFichero.getSender().getLocalName(), AID.ISLOCALNAME);
             mensajeFichero.addReceiver(agenteParticionador);
-
             try {
                 mensajeFichero.setContentObject(fichero);
             } catch (IOException e) {
@@ -79,14 +78,8 @@ public class LectorCSV_behaviour extends Behaviour {
 
             //Envía un array con el contenido del fichero
             this.myAgent.send(mensajeFichero);
-            System.out.println("Soy el agente " + this.myAgent.getLocalName() + " y he enviado" +
-                    " un fichero al agente " + peticionFichero.getSender().getLocalName());
-
-            try {
-                Thread.sleep(1000000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
+                        this.myAgent.getLocalName(),"ENV","Fichero", peticionFichero.getSender().getLocalName());
         }
     }
 
