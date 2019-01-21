@@ -104,7 +104,7 @@ public class Mostrador_behaviour extends Behaviour {
         String linea = new String(new char[190]).replace('\0', '-');
         System.out.println(linea);
         pintarResultados("Modelo","Porcentaje","Ratio VerPos", "Ratio FalPos",
-                "Ratio VerNeg","Ratio FalPos","Recall","Precisión","F-Valor");
+                "Ratio VerNeg","Ratio FalNeg","Recall","Precisión","F-Valor");
         System.out.println(linea);
         pintarResultadosMatriz(tablaDatos);
         System.out.println(linea);
