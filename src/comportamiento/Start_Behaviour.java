@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 public class Start_Behaviour extends Behaviour {
 
@@ -23,6 +24,7 @@ public class Start_Behaviour extends Behaviour {
 
     @Override
     public void action() {
+        long beforeUsedMem=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
         ContainerController cc = myAgent.getContainerController();
         modelos = new ArrayList<>();
         porcentajes = new ArrayList<>();
@@ -87,6 +89,9 @@ public class Start_Behaviour extends Behaviour {
                 System.out.println("Arrancando agente " + agent.getName() + "...");
                 agent.start();
             }
+            long afterUsedMem=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
+            long actualMemUsed=afterUsedMem-beforeUsedMem;
+            System.out.println("Memoria ocupada por los agentes: " + actualMemUsed);
 
         } catch (StaleProxyException e) {
             System.out.println(e.getMessage());

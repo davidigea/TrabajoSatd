@@ -7,6 +7,7 @@ import jade.lang.acl.UnreadableException;
 import utils.Tools;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 public class Mostrador_behaviour extends Behaviour {
@@ -21,6 +22,7 @@ public class Mostrador_behaviour extends Behaviour {
 
     @Override
     public void action() {
+        Date fechaInicio = new Date();
         ACLMessage msgRecibido = null;
         ArrayList<Integer> agentesUsados = new ArrayList<>();
         boolean elegidoNuevo;
@@ -118,7 +120,10 @@ public class Mostrador_behaviour extends Behaviour {
         this.myAgent.send(msg);
         System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
                 this.myAgent.getLocalName(),"ENV","Aviso de Finalización", agenteLector.getLocalName());
+        Date fechaFinal = new Date();
 
+        System.out.println("Fecha inicio -> " + fechaInicio);
+        System.out.println("Fecha final -> " + fechaFinal);
     }
 
     /* Pinta los resultados en el orden pasado con el formato adecuado */
