@@ -22,7 +22,7 @@ public class Mostrador_behaviour extends Behaviour {
 
     @Override
     public void action() {
-        Date fechaInicio = new Date();
+        long startTime = System.nanoTime();
         ACLMessage msgRecibido = null;
         ArrayList<Integer> agentesUsados = new ArrayList<>();
         boolean elegidoNuevo;
@@ -120,10 +120,11 @@ public class Mostrador_behaviour extends Behaviour {
         this.myAgent.send(msg);
         System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
                 this.myAgent.getLocalName(),"ENV","Aviso de Finalización", agenteLector.getLocalName());
-        Date fechaFinal = new Date();
+        long endTime = System.nanoTime();
+        long durationMs = (endTime - startTime)/1000000;
 
-        System.out.println("Fecha inicio -> " + fechaInicio);
-        System.out.println("Fecha final -> " + fechaFinal);
+        String lineaTiempo = new String(new char[34]).replace('\0', '=');
+        System.out.println(lineaTiempo + "\n= Duración del programa: " + durationMs + " ms =\n" + lineaTiempo);
     }
 
     /* Pinta los resultados en el orden pasado con el formato adecuado */

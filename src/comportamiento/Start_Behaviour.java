@@ -91,7 +91,8 @@ public class Start_Behaviour extends Behaviour {
             }
             long afterUsedMem=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
             long actualMemUsed=afterUsedMem-beforeUsedMem;
-            System.out.println("Memoria ocupada por los agentes: " + actualMemUsed);
+            String linea = new String(new char[50]).replace('\0', '=');
+            System.out.println(linea + "\n= Memoria ocupada por los agentes: " + actualMemUsed + " bytes =\n" + linea);
 
         } catch (StaleProxyException e) {
             System.out.println(e.getMessage());
