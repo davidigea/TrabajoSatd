@@ -79,6 +79,10 @@ public class LectorCSV_behaviour extends Behaviour {
                     System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
                             this.myAgent.getLocalName(), "ENV", "Aviso Finalización", p.getLocalName());
                 }
+                AID start = new AID("AgenteStart", AID.ISLOCALNAME);;
+                ACLMessage mensajeFichero = new ACLMessage(ACLMessage.REQUEST);
+                mensajeFichero.addReceiver(start);
+                this.myAgent.send(mensajeFichero);
             }else {
                 System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
                         this.myAgent.getLocalName(),"REC","Petición Fichero", peticionFichero.getSender().getLocalName());

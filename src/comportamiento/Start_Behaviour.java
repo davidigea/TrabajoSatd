@@ -4,6 +4,7 @@ import comportamiento.entrenadores.J48_behaviour;
 import comportamiento.entrenadores.MLP_behaviour;
 import comportamiento.entrenadores.NaiveBayes_behaviour;
 import jade.core.behaviours.Behaviour;
+import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
@@ -89,6 +90,8 @@ public class Start_Behaviour extends Behaviour {
                 System.out.println("Arrancando agente " + agent.getName() + "...");
                 agent.start();
             }
+
+            ACLMessage aviso = this.myAgent.blockingReceive();
             long afterUsedMem=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
             long actualMemUsed=afterUsedMem-beforeUsedMem;
             String linea = new String(new char[50]).replace('\0', '=');
