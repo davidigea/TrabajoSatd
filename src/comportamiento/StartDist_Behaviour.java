@@ -129,10 +129,10 @@ public class StartDist_Behaviour extends Behaviour {
 
             if(tipo == 1){
                 totalMem = slaveMem + actualMemUsed;
-                String linea = new String(new char[50]).replace('\0', '=');
-                System.out.println(linea + "\n= Memoria ocupada por los agentes del equipo maestro: " + actualMemUsed + " bytes =\n" + linea);
-                System.out.println(linea + "\n= Memoria ocupada por los agentes del equipo esclavo: " + slaveMem + " bytes =\n" + linea);
-                System.out.println(linea + "\n= Memoria ocupada por los agentes en total: " + totalMem + " bytes =\n" + linea);
+                String linea = new String(new char[80]).replace('\0', '=');
+                System.out.println(linea + "\n= Memoria ocupada por los agentes del equipo maestro: " + actualMemUsed + " bytes");
+                System.out.println("= Memoria ocupada por los agentes del equipo esclavo: " + slaveMem + " bytes");
+                System.out.println("= Memoria ocupada por los agentes en total: " + totalMem + " bytes\n" + linea);
             }
 
         } catch (StaleProxyException e) {

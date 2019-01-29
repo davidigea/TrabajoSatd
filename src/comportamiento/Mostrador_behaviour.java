@@ -123,7 +123,7 @@ public class Mostrador_behaviour extends Behaviour {
         long endTime = System.nanoTime();
         long durationMs = (endTime - startTime)/1000000;
 
-        String lineaTiempo = new String(new char[34]).replace('\0', '=');
+        String lineaTiempo = new String(new char[35]).replace('\0', '=');
         System.out.println(lineaTiempo + "\n= Duración del programa: " + durationMs + " ms =\n" + lineaTiempo);
     }
 
