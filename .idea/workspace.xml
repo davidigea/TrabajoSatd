@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9da233ed-146c-4bd7-87dc-d06524db0d4b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APDescription.txt" beforeDir="false" afterPath="$PROJECT_DIR$/APDescription.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comportamiento/Mostrador_behaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/comportamiento/Mostrador_behaviour.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comportamiento/Start_Behaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/comportamiento/Start_Behaviour.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,10 +16,10 @@
     <session id="-1954950180">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
-          <entry key="project.open.time.10" value="4" />
+          <entry key="project.closed" value="5" />
+          <entry key="project.open.time.10" value="5" />
           <entry key="project.open.time.12" value="1" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -39,12 +37,12 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="arff" value="26" />
-          <entry key="java" value="513" />
+          <entry key="java" value="519" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="513" />
+          <entry key="JAVA" value="519" />
           <entry key="PLAIN_TEXT" value="26" />
         </counts>
       </usages-collector>
@@ -55,8 +53,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/comportamiento/Start_Behaviour.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="514">
-              <caret line="93" column="82" selection-start-line="93" selection-start-column="82" selection-end-line="93" selection-end-column="82" />
+            <state relative-caret-position="1119">
+              <caret line="97" column="117" selection-start-line="97" selection-start-column="117" selection-end-line="97" selection-end-column="117" />
             </state>
           </provider>
         </entry>
@@ -64,8 +62,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/comportamiento/Mostrador_behaviour.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="599">
-              <caret line="125" column="57" selection-start-line="125" selection-start-column="57" selection-end-line="125" selection-end-column="57" />
+            <state relative-caret-position="2242">
+              <caret line="126" column="109" selection-start-line="126" selection-start-column="109" selection-end-line="126" selection-end-column="109" />
             </state>
           </provider>
         </entry>
@@ -179,7 +177,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Lanzador">
+  <component name="RunManager" selected="Application.pruebaEnvia">
     <configuration name="Lanzador" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="jade.Boot" />
       <module name="TrabajoSatd" />
@@ -188,9 +186,26 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="pruebaEnvia" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="jade.Boot" />
+      <module name="TrabajoSatd" />
+      <option name="PROGRAM_PARAMETERS" value="-gui -container -host 192.168.1.38 -agents agenteEmisor:prueba.Ej2_envia" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="pruebaRecibe" type="Application" factoryName="Application">
+      <module name="TrabajoSatd" />
+      <option name="PROGRAM_PARAMETERS" value="-gui -agents agenteEmisor:prueba.Ej2_recibe" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.Aplicacion" />
       <item itemvalue="Application.Lanzador" />
+      <item itemvalue="Application.pruebaEnvia" />
+      <item itemvalue="Application.pruebaRecibe" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -208,7 +223,8 @@
       <workItem from="1547736666422" duration="5529000" />
       <workItem from="1547745266355" duration="1104000" />
       <workItem from="1547809674296" duration="369000" />
-      <workItem from="1548059631862" duration="972000" />
+      <workItem from="1548059631862" duration="1447000" />
+      <workItem from="1548753154962" duration="478000" />
     </task>
     <task id="LOCAL-00001" summary="Empezados agentes media y mostrador y modificados los 3 agentes modelo">
       <created>1547547916202</created>
@@ -217,17 +233,23 @@
       <option name="project" value="LOCAL" />
       <updated>1547547916202</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Empezados agentes media y mostrador y modificados los 3 agentes modelo">
+      <created>1548061816101</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1548061816101</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9202000" />
+    <option name="totallyTimeSpent" value="10155000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49913943" visible="true" weight="0.18437119" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49913943" visible="true" weight="0.18620269" />
       <window_info id="Structure" order="1" sideWeight="0.5008606" side_tool="true" weight="0.18070818" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -332,17 +354,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/comportamiento/Mostrador_behaviour.java">
+    <entry file="file://$PROJECT_DIR$/src/comportamiento/Start_Behaviour.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="599">
-          <caret line="125" column="57" selection-start-line="125" selection-start-column="57" selection-end-line="125" selection-end-column="57" />
+        <state relative-caret-position="1119">
+          <caret line="97" column="117" selection-start-line="97" selection-start-column="117" selection-end-line="97" selection-end-column="117" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/comportamiento/Start_Behaviour.java">
+    <entry file="file://$PROJECT_DIR$/src/comportamiento/Mostrador_behaviour.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="514">
-          <caret line="93" column="82" selection-start-line="93" selection-start-column="82" selection-end-line="93" selection-end-column="82" />
+        <state relative-caret-position="2242">
+          <caret line="126" column="109" selection-start-line="126" selection-start-column="109" selection-end-line="126" selection-end-column="109" />
         </state>
       </provider>
     </entry>
