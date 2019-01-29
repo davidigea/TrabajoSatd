@@ -51,54 +51,56 @@ public class StartDist_Behaviour extends Behaviour {
             Thread.sleep(3000);
             //Se añaden al array de agentes todos los agentes que se vayan a lanzar
             ArrayList<AgentController> agents = new ArrayList<>();
+            Object[] argumentos;
 
-            //Los agentes lector y mostrador se añaden de forma estática
-            Object[] argumentos = {"lector", new LectorCSV_behaviour("data/" + fileName)};
-            agents.add(cc.createNewAgent("lector", "agentes.AgenteBase", argumentos));
+            if(tipo == 1){
+                //Los agentes lector y mostrador se añaden de forma estática
+                argumentos = new Object[]{"lector", new LectorCSV_behaviour("data/" + fileName)};
+                agents.add(cc.createNewAgent("lector", "agentes.AgenteBase", argumentos));
 
-            argumentos = new Object[]{"mostrador", new Mostrador_behaviour(modelos.size(), porcentajes.size())};
-            agents.add(cc.createNewAgent("mostrador", "agentes.AgenteBase", argumentos));
+                argumentos = new Object[]{"mostrador", new Mostrador_behaviour(modelos.size(), porcentajes.size())};
+                agents.add(cc.createNewAgent("mostrador", "agentes.AgenteBase", argumentos));
+            }
 
             for (int j = 0; j < porcentajes.size(); j++) {
                 String por = porcentajes.get(j);
                 for (int i = 0; i < numIteraciones; i++) {
-                    argumentos = new Object[]{"particionador", new Particionador_behaviour(Integer.parseInt(por),modelos.size())};
-                    agents.add(cc.createNewAgent("particionador_" + por + "_" + (i + 1),
-                            "agentes.AgenteBase", argumentos));
-                    for (String modelo : modelos) {
-                        Behaviour beh = null;
-                        switch (modelo) {
-                            case "bayes":
-                                beh = new NaiveBayes_behaviour();
-                                break;
-                            case "j48":
-                                beh = new J48_behaviour();
-                                break;
-                            case "mlp":
-                                beh = new MLP_behaviour();
-                                break;
-                        }
-                        argumentos = new Object[]{modelo, beh};
-                        agents.add(cc.createNewAgent(modelo + "_" + (10 * j + i + 1),
+                    if(tipo == 1){
+                        argumentos = new Object[]{"particionador", new Particionador_behaviour(Integer.parseInt(por),modelos.size())};
+                        agents.add(cc.createNewAgent("particionador_" + por + "_" + (i + 1),
                                 "agentes.AgenteBase", argumentos));
+                    }else {
+                        for (String modelo : modelos) {
+                            Behaviour beh = null;
+                            switch (modelo) {
+                                case "bayes":
+                                    beh = new NaiveBayes_behaviour();
+                                    break;
+                                case "j48":
+                                    beh = new J48_behaviour();
+                                    break;
+                                case "mlp":
+                                    beh = new MLP_behaviour();
+                                    break;
+                            }
+                            argumentos = new Object[]{modelo, beh};
+                            agents.add(cc.createNewAgent(modelo + "_" + (10 * j + i + 1),
+                                    "agentes.AgenteBase", argumentos));
+                        }
                     }
                 }
-                for (String mod : modelos) {
-                    argumentos = new Object[]{"media", new Media_behaviour(numIteraciones, (Integer.parseInt(por)), mod)};
-                    agents.add(cc.createNewAgent("media_" + mod + "_" + por, "agentes.AgenteBase", argumentos));
+                if(tipo == 1){
+                    for (String mod : modelos) {
+                        argumentos = new Object[]{"media", new Media_behaviour(numIteraciones, (Integer.parseInt(por)), mod)};
+                        agents.add(cc.createNewAgent("media_" + mod + "_" + por, "agentes.AgenteBase", argumentos));
+                    }
                 }
             }
 
             //Se recorre el array de agentes y se ponen en marcha
             for (AgentController agent : agents) {
-                String nombre = agent.getName();
-                if ((tipo == 1 && (nombre.contains("lector") || nombre.contains("particionador")
-                                || nombre.contains("media") || nombre.contains("mostrador"))) ||
-                     tipo == 2 && (nombre.contains("mlp") || nombre.contains("bayes")
-                                || nombre.contains("j48"))){
-                    System.out.println("Arrancando agente " + agent.getName() + "...");
-                    agent.start();
-                }
+                System.out.println("Arrancando agente " + agent.getName() + "...");
+                agent.start();
             }
 
             ACLMessage aviso = this.myAgent.blockingReceive();

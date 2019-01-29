@@ -5,6 +5,7 @@
  */
 package prueba;
 import jade.core.Agent;
+import utils.Tools;
 
 /**
  *
@@ -13,7 +14,7 @@ import jade.core.Agent;
 public class Ej2_Recibe extends Agent{
     protected void setup(){
         System.out.println("Hola, soy el agente " + getLocalName());
-        
+        Tools.registrarServicio(this, "Recibidor");
         addBehaviour(new Ej2_Recibe_Behaviour());
     }
 }
