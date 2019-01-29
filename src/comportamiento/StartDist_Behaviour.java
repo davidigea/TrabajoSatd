@@ -35,7 +35,7 @@ public class StartDist_Behaviour extends Behaviour {
         porcentajes = new ArrayList<>();
 
         //Para versión final
-        try { datos(); } catch (IOException e) { e.printStackTrace(); }
+        try {datos(); } catch (IOException e) { e.printStackTrace(); }
 
 /*         //Para pruebas:
         modelos.add("bayes");

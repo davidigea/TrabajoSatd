@@ -37,6 +37,14 @@ public class Media_behaviour extends Behaviour {
         for(int i=0;i<num;i++){     //Pedir num resultados
             ArrayList<AID> candidatos = Tools.BuscarAgentes(this.myAgent, modelo);              //Elegir uno del mismo modelo
             elegidoNuevo = false;
+            while(candidatos.size()<=0){
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                candidatos = Tools.BuscarAgentes(this.myAgent, modelo);
+            }
             while(!elegidoNuevo){
                 Random r = new Random();
                 int elegido = r.nextInt(candidatos.size());
