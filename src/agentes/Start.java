@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Start extends Agent {
     public void setup() {
-        System.out.println("¿Local o dsitribuido como maestro?:");
+        System.out.println("¿Local o distribuido como maestro?:");
         Scanner teclado = new Scanner(System.in);
         String opcion = teclado.nextLine();
 

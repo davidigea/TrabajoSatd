@@ -3,6 +3,7 @@ package comportamiento;
 import comportamiento.entrenadores.J48_behaviour;
 import comportamiento.entrenadores.MLP_behaviour;
 import comportamiento.entrenadores.NaiveBayes_behaviour;
+import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
@@ -103,11 +104,36 @@ public class StartDist_Behaviour extends Behaviour {
                 agent.start();
             }
 
-            ACLMessage aviso = this.myAgent.blockingReceive();
-            long afterUsedMem=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
-            long actualMemUsed=afterUsedMem-beforeUsedMem;
-            String linea = new String(new char[50]).replace('\0', '=');
-            System.out.println(linea + "\n= Memoria ocupada por los agentes: " + actualMemUsed + " bytes =\n" + linea);
+            long afterUsedMem = 0, actualMemUsed = 0;
+            long slaveMem = 0, totalMem = 0;
+
+            int n = 1;
+            if(tipo == 1) n = 2;
+            while(n>0) {
+                ACLMessage aviso = this.myAgent.blockingReceive();
+                if (aviso.getSender().getLocalName().contains("lector")) {
+                    afterUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+                    actualMemUsed = afterUsedMem - beforeUsedMem;
+                    if(tipo == 2){
+                        AID start = new AID("AgenteStartMaestro", AID.ISLOCALNAME);;
+                        ACLMessage mensajeMemoria = new ACLMessage(ACLMessage.REQUEST);
+                        mensajeMemoria.addReceiver(start);
+                        mensajeMemoria.setContent(String.valueOf(actualMemUsed));
+                        this.myAgent.send(mensajeMemoria);
+                    }
+                } else if (tipo == 1) {
+                    slaveMem =  Long.valueOf(aviso.getContent());
+                }
+                n--;
+            }
+
+            if(tipo == 1){
+                totalMem = slaveMem + actualMemUsed;
+                String linea = new String(new char[50]).replace('\0', '=');
+                System.out.println(linea + "\n= Memoria ocupada por los agentes del equipo maestro: " + actualMemUsed + " bytes =\n" + linea);
+                System.out.println(linea + "\n= Memoria ocupada por los agentes del equipo esclavo: " + slaveMem + " bytes =\n" + linea);
+                System.out.println(linea + "\n= Memoria ocupada por los agentes en total: " + totalMem + " bytes =\n" + linea);
+            }
 
         } catch (StaleProxyException e) {
             System.out.println(e.getMessage());
