@@ -89,6 +89,11 @@ public class Particionador_behaviour extends Behaviour {
                     this.myAgent.send(mensajeParticiones);
                     System.out.printf("Agente %-18s : %s : %-35s : Agente %-18s\n",
                             this.myAgent.getLocalName(),"ENV","Datos", nombreEmisor);
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

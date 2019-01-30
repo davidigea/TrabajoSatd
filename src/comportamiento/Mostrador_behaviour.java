@@ -30,8 +30,9 @@ public class Mostrador_behaviour extends Behaviour {
         String[][] tablaDatos = new String[numModelos*numPorcentajes][9];
         Object[] contenidoRespuesta = {};
 
+        ArrayList<AID> candidatos = Tools.BuscarAgentes(this.myAgent, "media");
+
         for(int i=0;i<numModelos*numPorcentajes;i++) {
-            ArrayList<AID> candidatos = Tools.BuscarAgentes(this.myAgent, "media");
             elegidoNuevo = false;
             while (!elegidoNuevo) {
                 Random r = new Random();

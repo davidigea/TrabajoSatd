@@ -37,16 +37,15 @@ public class StartDist_Behaviour extends Behaviour {
 
         //Para versión final
         try {datos(); } catch (IOException e) { e.printStackTrace(); }
-
-/*         //Para pruebas:
+/*
+         //Para pruebas:
         modelos.add("bayes");
         modelos.add("j48");
-        modelos.add("mlp");
         porcentajes.add("80");
         porcentajes.add("50");
         porcentajes.add("20");
-        fileName = "yellow-small.arff";
-        numIteraciones = 2;
+        fileName = "adult.arff";
+        numIteraciones = 1;
 */
         try {
             Thread.sleep(3000);
@@ -115,7 +114,7 @@ public class StartDist_Behaviour extends Behaviour {
                     afterUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
                     actualMemUsed = afterUsedMem - beforeUsedMem;
                     if(tipo == 2){
-                        AID start = new AID("AgenteStartMaestro", AID.ISLOCALNAME);;
+                        AID start = new AID("AgenteStartMaestro", AID.ISLOCALNAME);
                         ACLMessage mensajeMemoria = new ACLMessage(ACLMessage.REQUEST);
                         mensajeMemoria.addReceiver(start);
                         mensajeMemoria.setContent(String.valueOf(actualMemUsed));
